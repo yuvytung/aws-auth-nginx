@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  nginx:
+    hostname: nginx
+    container_name: nginx
+#    build: .
+    image: openresty/openresty
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./lib/lua/sha2.lua:/usr/local/openresty/lualib/sha2.lua
+    ports:
+      - "8080:8080"
+      - "443:443"
+    user: root
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 1
+      resources:
+        limits:
+          cpus: '1'
+          memory: 128MB
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
+      placement:
+        max_replicas_per_node: 4
