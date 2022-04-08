@@ -8,6 +8,7 @@ services:
     image: openresty/openresty
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/lua:/etc/nginx/lua-service
       - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
       - ./lib/lua/sha2.lua:/usr/local/openresty/lualib/sha2.lua
     ports:
